@@ -5,25 +5,50 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Nährwertangaben – Krack Sekthaus</title>
 
-	<link rel="stylesheet" href="./style.css">
+	<link rel="stylesheet" href="/style.css">
 
 	<script type="module">
-		import * as htmx from './htmx.min.js'; // v2 ESM
-		console.log('404 page', htmx);
+		import * as htmxModule from '/htmx.min.js'; // v2 ESM
+		console.log('404 page', window.htmx);
 
+		const htmx = window.htmx;
+		// htmx.logAll();
+
+		const url = new URL(window.location.href);
+		let path = url.pathname.substr(1);
+		console.log(url.pathname.substr(1));
+		// const path = '002';
+
+		// load label data
+		const data = await fetch('/data.json');
+		const labels = await data.json();
+
+		const wine = document.createElement('section');
+		wine.setAttribute('id', 'wine');
+
+		if(labels[path]) {
+			wine.setAttribute('hx-get', '/data/' + labels[path]);
+			wine.setAttribute('hx-trigger', 'load');
+		} else {
+			console.error('File not found!');
+			wine.innerHTML = '<h1>Label nicht gefunden!</h1>';
+		}
+
+		document.querySelector('main').appendChild(wine);
+		htmx.process(wine);
 
 	</script>
 </head>
 <body>
 
 	<div id="container">
-		<header hx-get="./parts/header.html" hx-trigger="load" hx-target="this"></header>
-		<nav hx-get="./parts/nav.html" hx-trigger="load" hx-target="this"></nav>
-		<main hx-get="./data/a.html" hx-trigger="load" hx-target="#wine">
-			<section id="wine"></section>
+		<header hx-get="/parts/header.html" hx-trigger="load" hx-target="this"></header>
+		<nav hx-get="/parts/nav.html" hx-trigger="load" hx-target="this"></nav>
+		<main>
+			
 		</main>
-		<footer hx-get="./parts/footer.html" hx-trigger="load" hx-target="this"></footer>
+		<footer hx-get="/parts/footer.html" hx-trigger="load" hx-target="this"></footer>
 	</div>
-	<h2>404</h2>
+	<!--<h2>404</h2>-->
 </body>
 </html>
