@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Nährwertangaben – Krack Sekthaus</title>
 
 	<link rel="stylesheet" href="/style.css">
+	<link rel="icon" href="/favicon.ico?v=1">
+
+	<meta property="og:title" content="Krack Sekthaus - Nährwertangaben">
+	<meta property="og:image" content="https://nutri.krack-sekt.de/preview.png">
 
 	<script type="module">
 		import * as htmxModule from '/htmx.min.js'; // v2 ESM
@@ -49,6 +53,5 @@
 		</main>
 		<footer hx-get="/parts/footer.html" hx-trigger="load" hx-target="this"></footer>
 	</div>
-	<!--<h2>404</h2>-->
 </body>
 </html>
