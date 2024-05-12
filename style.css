@@ -76,6 +76,7 @@ nav ul {
 	list-style: none;
 	padding: 0;
 	display: flex;
+	flex-wrap: wrap;
 	gap: 1rem;
 }
 
@@ -121,4 +122,31 @@ footer {
 .footer-nav a {
 	color: currentColor;
 	text-decoration: underline;
+}
+
+@media (max-width: 35rem) {
+	html {
+		font-size: 1.1875em;
+	}
+
+	nav ul {
+		gap: 0.5ch;
+	}
+
+	dl {
+		grid-template-columns: 1fr;
+	}
+
+	dt {
+		padding-block-end: 0;
+	}
+
+	dd {
+		font-size: 1.375rem;
+		padding-block-start: 0;
+	}
+
+	dd:nth-of-type(n) {
+		border-block-start: 0;
+	}
 }
