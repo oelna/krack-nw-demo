@@ -17,8 +17,8 @@
 	<meta property="og:image:type" content="image/jpeg" />
 
 	<script type="module">
-		import * as htmxModule from '/htmx.min.js'; // v2 ESM
-		console.log('404 page', window.htmx);
+		import * as htmxModule from '/htmx4.min.js'; // v4 beta ESM
+		// console.log('404 page', window.htmx);
 
 		const htmx = window.htmx;
 		// htmx.logAll();
@@ -26,7 +26,6 @@
 		const url = new URL(window.location.href);
 		let path = url.pathname.substr(1);
 		console.log(url.pathname.substr(1));
-		// const path = '002';
 
 		// load label data
 		const data = await fetch('/data.json');
@@ -41,11 +40,96 @@
 		} else {
 			console.error('File not found!');
 			wine.innerHTML = '<h1>Label nicht gefunden!</h1>';
+
+			// debug
+			wine.setAttribute('hx-get', '/data/2026-04-cr-rose.html');
+			wine.setAttribute('hx-trigger', 'load');
 		}
 
 		document.querySelector('main').appendChild(wine);
 		htmx.process(wine);
 
+		// language switcher
+		document.body.addEventListener('click', (event) => {
+			const langToggle = event.target.closest('nav [data-language]');
+			if (!langToggle) return;
+
+			const setLanguage = langToggle.getAttribute('data-language');
+			translatePage(setLanguage);
+		});
+
+		const translations = {
+			de: {
+				naehrwertangaben: "Nährwertangaben",
+				geschmack: "Geschmack",
+				losNr: "Los-Nr.",
+				naehrwertJe100: "Nährwerte je 100ml",
+				energie: "Energie",
+				kohlenhydrate: "Kohlenhydrate",
+				davonzucker: "Davon Zucker",
+				enthaeltGeringeMengen: "Enthält geringe Mengen von",
+				fett: "Fett",
+				gesaettigteFettsaeuren: "gesättigten Fettsäuren",
+				eiweiss: "Eiweiß",
+				salz: "Salz",
+				inhaltsstoffe: "Inhaltsstoffe",
+				zutaten: "Zutaten",
+				trauben: "Trauben",
+				fuelldosage: "Fülldosage",
+				versanddosage: "Versanddosage",
+				saccharose: "Saccharose",
+				weinsaeure: "Weinsäure",
+				saeureReg: "Säureregulatoren",
+				konservierungsstoffe: "Konservierungsstoffe",
+				sulfite: "Sulfite",
+				stabilisatoren: "Stabilisatoren"
+			},
+			en: {
+				naehrwertangaben: "Nutrition information",
+				geschmack: "Style",
+				losNr: "Lot no.",
+				naehrwertJe100: "Nutrition information per 100ml",
+				energie: "Energy",
+				kohlenhydrate: "Carbohydrate",
+				davonzucker: "of which sugars",
+				enthaeltGeringeMengen: "Contains negligible amounts of",
+				fett: "Fat",
+				gesaettigteFettsaeuren: "saturated fatty acids",
+				eiweiss: "Protein",
+				salz: "Salt",
+				inhaltsstoffe: "Ingredients",
+				zutaten: "Ingredients",
+				trauben: "Grapes",
+				fuelldosage: "Filling dosage",
+				versanddosage: "Expedition dosage",
+				saccharose: "Sucrose",
+				weinsaeure: "Tartaric acid",
+				saeureReg: "Acidity regulators",
+				konservierungsstoffe: "Preservatives",
+				sulfite: "Sulfites",
+				stabilisatoren: "Stabilisers"
+			}
+		};
+
+		function translatePage (language) {
+			const translatableElements = document.querySelectorAll("[data-i18n]");
+			const dictionary = translations[language] || translations.de;
+
+			translatableElements.forEach((element) => {
+				const key = element.dataset.i18n;
+
+				if (dictionary[key]) {
+					element.textContent = dictionary[key];
+				}
+			});
+		}
+
+		/*
+		htmx.onLoad((root) => {
+			const currentYear = document.querySelectorAll("#current-year");
+			if (currentYear) currentYear.textContent = '2026';
+		});
+		*/
 	</script>
 </head>
 <body>
